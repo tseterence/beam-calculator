@@ -28,13 +28,14 @@ td {
     font-size: 120%;
 }
 
-input[type=text] {
+input[inputmode=numeric] {
     text-align: right;
     outline: none;
     border: 1px solid #DDDDDD;
+    width: 120px;
 }
 
-input[type=text]:focus {
+input[inputmode=numeric]:focus {
     box-shadow: 0 0 5px rgb(81, 203, 238);
     border: 1px solid rgb(81, 203, 238);
 }
@@ -47,7 +48,9 @@ button {
     color: white;
     text-align: center;
     font-size: 130%;
-    margin: 10px 10%;
+    padding: 6px;
+    border-radius: 5px;
+    margin: 10px 8%;
 }
 
 #clear {
