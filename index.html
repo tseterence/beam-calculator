@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beam Calculator</title>
+
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <h1>Beam Calculator</h1>
+    <h2>Simple Beam - Uniformly Distributed Load</h2>
+    <main>        
+        <img src= "images/simple-uniform-load.jpg"/>
+        <section class="container">
+            <section class="inputs">
+                <h2>Input values:</h2>
+                <table>
+                    <tr>
+                        <td>Length of Beam, L: </td>
+                        <td><input type="text" id="length"maxlength="8" size="8"> in</td>
+                    </tr>
+                    <tr>
+                        <td>Load on Beam, w: </td>
+                        <td><input type="text" id="load"maxlength="8" size="8"> kips/in</td>
+                    </tr>
+                    <tr>
+                        <td>Point of Interest, x: </td>
+                        <td><input type="text" id="pointX"maxlength="8" size="8"> in</td>
+                    </tr>
+                    <tr>
+                        <td>Young's Modulus, E: </td>
+                        <td><input type="text" id="youngsModulus"maxlength="8" size="8"> ksi</td>
+                    </tr>
+                    <tr>
+                        <td>Moment of Inertia, I: </td>
+                        <td><input type="text" id="momentInertia"maxlength="8" size="8"> in<sup>4</sub><td>
+                    </tr>
+                </table>
+                <button type="button" id="clear">Clear All</button>
+                <button type="button" id="calculate">Calculate</button>
+            </section>
+    
+            <section class="outputs">
+                <h2>Results:</h2>
+                <table>
+                    <tr>
+                        <td>Total Equiv. Load: </td>
+                        <td><ouput id="equiv" maxlength="8" size="8"></td>
+                    </tr>
+                    <tr>
+                        <td>Reaction, R: </td>
+                        <td><ouput id="rxn" maxlength="8" size="8"></td>
+                    </tr>
+                    <tr>
+                        <td>Shear at x, V<sub>x</sub>: </td>
+                        <td><output id="shearX" maxlength="8" size="8"></td>
+                    </tr>
+                    <tr>
+                        <td>Max. Moment, M<sub>max</sub>: </td>
+                        <td><output id="momentMax" maxlength="8" size="8"></td>
+                    </tr>
+                    <tr>
+                        <td>Moment at x, M<sub>x</sub>: </td>
+                        <td><output id="momentX" maxlength="8" size="8"></td>
+                    </tr>
+                    <tr>
+                        <td>Max. Deflection, Δ<sub>max</sub>: </td>
+                        <td><output id="deflectionMax" maxlength="8" size="8"></td>
+                    </tr>
+                    <tr>
+                        <td>Deflection at x, Δ<sub>x</sub>: </td>
+                        <td><output id="deflectionX" maxlength="8" size="8"></td>
+                    </tr>
+                </table>
+            </class>
+        </section>
+    </main> 
+
+    <script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
