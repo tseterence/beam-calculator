@@ -12,6 +12,8 @@ function calculate() {
         calcX()
         calcMax()
         document.querySelector('.outputs').style.display = 'block'
+        document.querySelector('.outputs').scrollIntoView()
+        
         console.log('calculated')
     }
 }
