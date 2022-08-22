@@ -2,21 +2,25 @@
 // multiple load cases/support conditions
 // add dropdown <select> tag to select steel beam Ixx based off library
 
-document.querySelector('#calculate').addEventListener('click', calculate)
+document.querySelector('#calculate').addEventListener('click', e => {
+    calculate()
+    
+    // utilize below line for different load cases/support conditions - drier js code
+    console.log(e.target.className)
+})
 document.querySelectorAll('.outputUnit').forEach(item => item.addEventListener('change', updateOutput))
 document.querySelector('#clear').addEventListener('click', clearInput)
 document.querySelectorAll('input').forEach(item => item.addEventListener('change', hideOutput))
 document.querySelectorAll('.inputUnit').forEach(item => item.addEventListener('change', hideOutput))
 
 // calculate driver function
-function calculate(e) {
+function calculate() {
     storeInput()
     if (validateInput()) {
         updateOutput()
         document.querySelector('.outputs').style.display = 'block'
         document.querySelector('.outputs').scrollIntoView()
     }
-    // console.log(e.composedPath())
 }
 
 // global namespace storing all user input
@@ -44,8 +48,21 @@ function storeInput() {
         inputValues.x = document.querySelector('#pointX').value / 12
     }
 
-    inputValues.E = document.querySelector('#youngsModulus').value * (12 ** 2)
-    inputValues.I = document.querySelector('#momentInertia').value / (12 ** 4)
+    if (document.querySelector('#E_unit').value === 'ksi') {
+        inputValues.E = document.querySelector('#youngsModulus').value * (12 ** 2)
+    } else if (document.querySelector('#E_unit').value === 'psi') {
+        inputValues.E = document.querySelector('#youngsModulus').value * (12 ** 2) / 1000
+    } else if (document.querySelector('#E_unit').value === 'ksf') {
+        inputValues.E = document.querySelector('#youngsModulus').value / 1
+    } else if (document.querySelector('#E_unit').value === 'psf') {
+        inputValues.E = document.querySelector('#youngsModulus').value / 1000
+    }
+
+    if (document.querySelector('#I_unit').value === 'in4') {
+        inputValues.I = document.querySelector('#momentInertia').value / (12 ** 4)
+    } else if (document.querySelector('#I_unit').value === 'ft4') {
+        inputValues.I = document.querySelector('#momentInertia').value / 1
+    }
 }
 
 // validate inputs
@@ -118,13 +135,13 @@ function displayOutput() {
     }
 
     if (document.querySelector('#Dmax_unit').value === 'in') {
-        document.querySelector('#deflectionMax').innerHTML = `${(outputValues.Dmax * 12).toFixed(4)}`
+        document.querySelector('#deflectionMax').innerHTML = `${(outputValues.Dmax * 12).toFixed(2)}`
     } else if (document.querySelector('#Dmax_unit').value === 'ft') {
         document.querySelector('#deflectionMax').innerHTML = `${(outputValues.Dmax).toFixed(4)}`
     }
 
     if (document.querySelector('#Dx_unit').value === 'in') {
-        document.querySelector('#deflectionX').innerHTML = `${(outputValues.Dx * 12).toFixed(4)}`
+        document.querySelector('#deflectionX').innerHTML = `${(outputValues.Dx * 12).toFixed(2)}`
     } else if (document.querySelector('#Dx_unit').value === 'ft') {
         document.querySelector('#deflectionX').innerHTML = `${(outputValues.Dx).toFixed(4)}`
     }
@@ -141,10 +158,12 @@ function updateOutput(e) {
 
 function hideOutput() {
     document.querySelector('.outputs').style.display = 'none'
+    document.querySelectorAll('.outputUnit').forEach(output => output.selectedIndex = 0)
 }
 
 function clearInput() {
     hideOutput()
     document.querySelectorAll('input').forEach(input => input.value = input.defaultValue)
-    document.querySelectorAll('.inputUnit').forEach(input => input.selectedIndex = 0)
+
+    // document.querySelectorAll('.inputUnit').forEach(input => input.selectedIndex = 0)
 }

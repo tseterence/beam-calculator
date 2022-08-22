@@ -20,7 +20,7 @@
                 <h2>Input values:</h2>
                 <table>
                     <tr>
-                        <td>Length of Beam, L : </td>
+                        <td>Length of Beam, L :</td>
                         <td>
                             <input inputmode="numeric" id="length" value="" maxlength="8" size="8">
                             <select id="L_unit" class="inputUnit">
@@ -30,7 +30,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Load on Beam, w : </td>
+                        <td>Load on Beam, w :</td>
                         <td>
                             <input inputmode="numeric" id="load" value="" maxlength="8" size="8">
                             <select id="w_unit" class="inputUnit">
@@ -41,7 +41,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Point of Interest, x : </td>
+                        <td>Point of Interest, x :</td>
                         <td>
                             <input inputmode="numeric" id="pointX" value="" maxlength="8" size="8">
                             <select id="x_unit" class="inputUnit">
@@ -51,12 +51,26 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Young's Modulus, E : </td>
-                        <td><input inputmode="numeric" id="youngsModulus" value="29000" maxlength="8" size="8"> ksi</td>
+                        <td>Young's Modulus, E :</td>
+                        <td>
+                            <input inputmode="numeric" id="youngsModulus" value="" maxlength="8" size="8">
+                            <select id="E_unit" class="inputUnit">
+                                <option value="ksi">ksi</option>
+                                <option value="psi">psi</option>
+                                <option value="ksf">ksf</option>
+                                <option value="psf">psf</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Moment of Inertia, I : </td>
-                        <td><input inputmode="numeric" id="momentInertia" value="" maxlength="8" size="8"> in<sup>4</sub><td>
+                        <td>Moment of Inertia, I :</td>
+                        <td>
+                            <input inputmode="numeric" id="momentInertia" value="" maxlength="8" size="8">
+                            <select id="I_unit" class="inputUnit">
+                                <option value="in4">in&#x2074</option>
+                                <option value="ft4">ft&#x2074</option>
+                            </select>
+                        <td>
                     </tr>
                 </table>
                 <button type="button" id="clear">Clear All</button>
@@ -67,7 +81,7 @@
                 <h2>Results:</h2>
                 <table>
                     <tr>
-                        <td>R = V : </td>
+                        <td>R = V :</td>
                         <td>
                             <span id="rxn" maxlength="8" size="8"></span>
                             <select id="R_unit" class="outputUnit">
@@ -77,7 +91,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Shear at x, V<sub>x</sub> : </td>
+                        <td>Shear at x, V<sub>x</sub> :</td>
                         <td>
                             <span id="shearX" maxlength="8" size="8"></span>
                             <select id="Vx_unit" class="outputUnit">
@@ -87,7 +101,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Max. moment, M<sub>max</sub> : </td>
+                        <td>Max. moment, M<sub>max</sub> :</td>
                         <td>
                             <span id="momentMax" maxlength="8" size="8"></span>
                             <select id="Mmax_unit" class="outputUnit">
@@ -98,7 +112,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Moment at x, M<sub>x</sub> : </td>
+                        <td>Moment at x, M<sub>x</sub> :</td>
                         <td>
                             <span id="momentX" maxlength="8" size="8"></span>
                             <select id="Mx_unit" class="outputUnit">
@@ -109,7 +123,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Max. Deflection, Δ<sub>max</sub> : </td>
+                        <td>Max. Deflection, Δ<sub>max</sub> :</td>
                         <td>
                             <span id="deflectionMax" maxlength="8" size="8"></span>
                             <select id="Dmax_unit" class="outputUnit">
@@ -119,7 +133,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Deflection at x, Δ<sub>x</sub> : </td>
+                        <td>Deflection at x, Δ<sub>x</sub> :</td>
                         <td>
                             <span id="deflectionX" maxlength="8" size="8"></span>
                             <select id="Dx_unit" class="outputUnit">

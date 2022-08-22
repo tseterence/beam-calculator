@@ -46,7 +46,7 @@ input[inputmode=numeric]:focus {
 }
 
 select {
-    width: 75px;
+    width: 70px;
 }
 
 button {
@@ -87,6 +87,12 @@ button {
     .inputs, .outputs {
         width: 305px;
     }
+    input[inputmode=numeric] {
+        width: 70px;
+    }
+    select {
+        width: 60px;
+    }
 }
 
 @media (max-width: 800px) {
@@ -94,26 +100,3 @@ button {
         width: 100%;
     }
 }
-
-
-
-/* form.form-example {
-    display: table;
-}
-
-div.form-example {
-    display: table-row;
-}
-
-label, input {
-    display: table-cell;
-    margin-bottom: 10px;
-}
-
-label {
-    padding-right: 10px;
-} */
-
-/* input, output {
-    margin-bottom: 5px;
-} */
