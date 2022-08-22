@@ -14,7 +14,7 @@ html {
 img {
     display: block;
     margin: 10px auto;
-    width: 850px;
+    width: 825px;
 }
 
 .container {
@@ -33,6 +33,7 @@ input[inputmode=numeric] {
     outline: none;
     border: 1px solid #DDDDDD;
     width: 90px;
+    background: lightgoldenrodyellow;
 }
 
 input[inputmode=numeric]:focus {
@@ -42,6 +43,10 @@ input[inputmode=numeric]:focus {
 
 .inputs, .outputs {
     margin: 5px 30px;
+}
+
+select {
+    width: 75px;
 }
 
 button {

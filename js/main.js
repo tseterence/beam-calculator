@@ -1,92 +1,150 @@
-document.querySelector('#clear').addEventListener('click', clear)
+// suggestions:
+// multiple load cases/support conditions
+// add dropdown <select> tag to select steel beam Ixx based off library
+
 document.querySelector('#calculate').addEventListener('click', calculate)
+document.querySelectorAll('.outputUnit').forEach(item => item.addEventListener('change', updateOutput))
+document.querySelector('#clear').addEventListener('click', clearInput)
+document.querySelectorAll('input').forEach(item => item.addEventListener('change', hideOutput))
+document.querySelectorAll('.inputUnit').forEach(item => item.addEventListener('change', hideOutput))
 
-function clear() {
-    Array.from(document.querySelectorAll('input')).forEach(input => input.value = '')
-    document.querySelector('.outputs').style.display = 'none'
-}
-
-function calculate() {
-    if (validate()) {
-        calcRxn()
-        calcX()
-        calcMax()
+// calculate driver function
+function calculate(e) {
+    storeInput()
+    if (validateInput()) {
+        updateOutput()
         document.querySelector('.outputs').style.display = 'block'
         document.querySelector('.outputs').scrollIntoView()
-        
-        console.log('calculated')
     }
+    // console.log(e.composedPath())
 }
 
-function validate() {
-    console.log('validating input...')
-    
-    let l = document.querySelector('#length').value
-    let w = document.querySelector('#load').value
-    let E = document.querySelector('#youngsModulus').value
-    let I = document.querySelector('#momentInertia').value
-    let x = document.querySelector('#pointX').value
+// global namespace storing all user input
+let inputValues = {}
 
-    if (isNaN(Number(l)) || Number(l) <= 0) {
+// [kip] & [ft] units by default, number type
+function storeInput() {
+    if (document.querySelector('#L_unit').value === 'ft') {
+        inputValues.l = document.querySelector('#length').value / 1
+    } else if (document.querySelector('#L_unit').value === 'in') {
+        inputValues.l = document.querySelector('#length').value / 12
+    }
+
+    if (document.querySelector('#w_unit').value === 'plf') {
+        inputValues.w = document.querySelector('#load').value / 1000
+    } else if (document.querySelector('#w_unit').value === 'klf') {
+        inputValues.w = document.querySelector('#load').value / 1
+    } else if (document.querySelector('#w_unit').value === 'pli') {
+        inputValues.w = document.querySelector('#load').value / 1000 * 12
+    }
+
+    if (document.querySelector('#x_unit').value === 'ft') {
+        inputValues.x = document.querySelector('#pointX').value / 1
+    } else if (document.querySelector('#x_unit').value === 'in') {
+        inputValues.x = document.querySelector('#pointX').value / 12
+    }
+
+    inputValues.E = document.querySelector('#youngsModulus').value * (12 ** 2)
+    inputValues.I = document.querySelector('#momentInertia').value / (12 ** 4)
+}
+
+// validate inputs
+function validateInput() {
+    if (isNaN(inputValues.l) || inputValues.l <= 0) {
         alert('L must have a value greater than 0.')
         return false
     }
-    if (w === '' || isNaN(Number(w))) {
+    if (inputValues.w === '' || isNaN(inputValues.w)) {
         alert('Please enter an acceptable value for w.')
         return false
     }
-    if (isNaN(Number(E)) || Number(E) <= 0) {
+    if (isNaN(inputValues.E) || inputValues.E <= 0) {
         alert('E must have a value greater than 0.')
         return false
     }
-    if (isNaN(Number(I)) || Number(I) <= 0) {
+    if (isNaN(inputValues.I) || inputValues.I <= 0) {
         alert('I must have a value greater than 0.')
         return false
     }
-    if (isNaN(Number(x)) || Number(x) <= 0 || Number(x) > l) {
+    // x should not be required to det max. shear, moment, and deflection
+    if (isNaN(inputValues.x) || inputValues.x <= 0 || inputValues.x > inputValues.l) {
         alert('x must be a value between 0 and L.')
         return false
     }
     return true
 }
 
-function calcRxn() {
-    let l = document.querySelector('#length').value
-    let w = document.querySelector('#load').value
+// global namespace storing all output
+let outputValues = {}
 
-    let Equiv = w * l
-    document.querySelector('#equiv').innerHTML = `${Equiv.toFixed(1)} kips`
-
-    let Rxn = w * l / 2
-    document.querySelector('#rxn').innerHTML = `${Rxn.toFixed(1)} kips`
+// [kip] & [ft] units by default, number type
+function calcOutput() {
+    outputValues.R = inputValues.w * inputValues.l / 2
+    outputValues.Vx = inputValues.w * (inputValues.l / 2 - inputValues.x)
+    outputValues.Mmax = inputValues.w * (inputValues.l ** 2) / 8
+    outputValues.Mx = inputValues.w * inputValues.x / 2 * (inputValues.l - inputValues.x)
+    outputValues.Dmax = (5 * inputValues.w * inputValues.l ** 4) / (384 * inputValues.E * inputValues.I)
+    outputValues.Dx = (inputValues.w * inputValues.x) / (24 * inputValues.E * inputValues.I) * ((inputValues.l ** 3 - 2 * inputValues.l * inputValues.x ** 2 + inputValues.x ** 3))
 }
 
-function calcX() {
-    let l = document.querySelector('#length').value
-    let w = document.querySelector('#load').value
-    let E = document.querySelector('#youngsModulus').value
-    let I = document.querySelector('#momentInertia').value
-    let x = document.querySelector('#pointX').value
+// display output
+function displayOutput() {
+    if (document.querySelector('#R_unit').value === 'kip') {
+        document.querySelector('#rxn').innerHTML = `${(outputValues.R).toFixed(2)}`
+    } else if (document.querySelector('#R_unit').value === 'lbf') {
+        document.querySelector('#rxn').innerHTML = `${(outputValues.R * 1000).toFixed(0)}`
+    }
 
-    let Vx = w * (l / 2 - x)
-    document.querySelector('#shearX').innerHTML = `${Vx.toFixed(2)} kips`
+    if (document.querySelector('#Vx_unit').value === 'kip') {
+        document.querySelector('#shearX').innerHTML = `${(outputValues.Vx).toFixed(2)}`
+    } else if (document.querySelector('#Vx_unit').value === 'lbf') {
+        document.querySelector('#shearX').innerHTML = `${(outputValues.Vx * 1000).toFixed(0)}`
+    }
 
-    let Mx = w * x / 2 * (l - x)
-    document.querySelector('#momentX').innerHTML = `${Mx.toFixed(1)} kip-in`
+    if (document.querySelector('#Mmax_unit').value === 'kip-ft') {
+        document.querySelector('#momentMax').innerHTML = `${(outputValues.Mmax).toFixed(2)}`
+    } else if (document.querySelector('#Mmax_unit').value === 'lbf-ft') {
+        document.querySelector('#momentMax').innerHTML = `${(outputValues.Mmax * 1000).toFixed(0)}`
+    } else if (document.querySelector('#Mmax_unit').value === 'lbf-in') {
+        document.querySelector('#momentMax').innerHTML = `${(outputValues.Mmax * 1000 * 12).toFixed(0)}`
+    }
 
-    let Dx = (w * x) / (24 * E * I) * (l ** 3 - 2 * l * x ** 2 + x ** 3)
-    document.querySelector('#deflectionX').innerHTML = `${Dx.toFixed(4)} in`
+    if (document.querySelector('#Mx_unit').value === 'kip-ft') {
+        document.querySelector('#momentX').innerHTML = `${(outputValues.Mx).toFixed(2)}`
+    } else if (document.querySelector('#Mx_unit').value === 'lbf-ft') {
+        document.querySelector('#momentX').innerHTML = `${(outputValues.Mx * 1000).toFixed(0)}`
+    } else if (document.querySelector('#Mx_unit').value === 'lbf-in') {
+        document.querySelector('#momentX').innerHTML = `${(outputValues.Mx * 1000 * 12).toFixed(0)}`
+    }
+
+    if (document.querySelector('#Dmax_unit').value === 'in') {
+        document.querySelector('#deflectionMax').innerHTML = `${(outputValues.Dmax * 12).toFixed(4)}`
+    } else if (document.querySelector('#Dmax_unit').value === 'ft') {
+        document.querySelector('#deflectionMax').innerHTML = `${(outputValues.Dmax).toFixed(4)}`
+    }
+
+    if (document.querySelector('#Dx_unit').value === 'in') {
+        document.querySelector('#deflectionX').innerHTML = `${(outputValues.Dx * 12).toFixed(4)}`
+    } else if (document.querySelector('#Dx_unit').value === 'ft') {
+        document.querySelector('#deflectionX').innerHTML = `${(outputValues.Dx).toFixed(4)}`
+    }
 }
 
-function calcMax() {
-    let l = document.querySelector('#length').value
-    let w = document.querySelector('#load').value
-    let E = document.querySelector('#youngsModulus').value
-    let I = document.querySelector('#momentInertia').value
+function updateOutput(e) {
+    calcOutput()
+    displayOutput()
 
-    let Mmax = w * (l ** 2) / 8
-    document.querySelector('#momentMax').innerHTML = `${Mmax.toFixed(1)} kip-in`
+    // console.log(e.target)
+    // console.log(e.target.value)
+    // console.log(e.target.id)
+}
 
-    let Dmax = (5 * w * l ** 4) / (384 * E * I)
-    document.querySelector('#deflectionMax').innerHTML = `${Dmax.toFixed(4)} in`
+function hideOutput() {
+    document.querySelector('.outputs').style.display = 'none'
+}
+
+function clearInput() {
+    hideOutput()
+    document.querySelectorAll('input').forEach(input => input.value = input.defaultValue)
+    document.querySelectorAll('.inputUnit').forEach(input => input.selectedIndex = 0)
 }

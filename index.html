@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beam Calculator</title>
 
+    <link rel="icon" href="images/favicon.ico">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -13,66 +14,119 @@
     <h1>Beam Calculator</h1>
     <h2>Simple Beam - Uniformly Distributed Load</h2>
     <main>        
-        <img src= "images/simple-uniform-load.jpg"/>
+        <img src= "images/case0.jpg"/>
         <section class="container">
             <section class="inputs">
                 <h2>Input values:</h2>
                 <table>
                     <tr>
-                        <td>Length of Beam, L: </td>
-                        <td><input inputmode="numeric" id="length" maxlength="8" size="8"> in</td>
+                        <td>Length of Beam, L : </td>
+                        <td>
+                            <input inputmode="numeric" id="length" value="" maxlength="8" size="8">
+                            <select id="L_unit" class="inputUnit">
+                                <option value="ft">ft</option>
+                                <option value="in">in</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Load on Beam, w: </td>
-                        <td><input inputmode="numeric" id="load" maxlength="8" size="8"> kips/in</td>
+                        <td>Load on Beam, w : </td>
+                        <td>
+                            <input inputmode="numeric" id="load" value="" maxlength="8" size="8">
+                            <select id="w_unit" class="inputUnit">
+                                <option value="plf">lbf/ft</option>
+                                <option value="klf">kip/ft</option>
+                                <option value="pli">lbf/in</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Point of Interest, x: </td>
-                        <td><input inputmode="numeric" id="pointX" maxlength="8" size="8"> in</td>
+                        <td>Point of Interest, x : </td>
+                        <td>
+                            <input inputmode="numeric" id="pointX" value="" maxlength="8" size="8">
+                            <select id="x_unit" class="inputUnit">
+                                <option value="ft">ft</option>
+                                <option value="in">in</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Young's Modulus, E: </td>
-                        <td><input inputmode="numeric" id="youngsModulus" maxlength="8" size="8"> ksi</td>
+                        <td>Young's Modulus, E : </td>
+                        <td><input inputmode="numeric" id="youngsModulus" value="29000" maxlength="8" size="8"> ksi</td>
                     </tr>
                     <tr>
-                        <td>Moment of Inertia, I: </td>
-                        <td><input inputmode="numeric" id="momentInertia" maxlength="8" size="8"> in<sup>4</sub><td>
+                        <td>Moment of Inertia, I : </td>
+                        <td><input inputmode="numeric" id="momentInertia" value="" maxlength="8" size="8"> in<sup>4</sub><td>
                     </tr>
                 </table>
                 <button type="button" id="clear">Clear All</button>
-                <button type="button" id="calculate">Calculate</button>
+                <button type="button" id="calculate" class="case0">Calculate</button>
             </section>
     
             <section class="outputs">
                 <h2>Results:</h2>
                 <table>
                     <tr>
-                        <td>Total Equiv. Load: </td>
-                        <td><ouput id="equiv" maxlength="8" size="8"></td>
+                        <td>R = V : </td>
+                        <td>
+                            <span id="rxn" maxlength="8" size="8"></span>
+                            <select id="R_unit" class="outputUnit">
+                                <option value="kip">kip</option>
+                                <option value="lbf">lbf</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Reaction, R: </td>
-                        <td><ouput id="rxn" maxlength="8" size="8"></td>
+                        <td>Shear at x, V<sub>x</sub> : </td>
+                        <td>
+                            <span id="shearX" maxlength="8" size="8"></span>
+                            <select id="Vx_unit" class="outputUnit">
+                                <option value="kip">kip</option>
+                                <option value="lbf">lbf</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Shear at x, V<sub>x</sub>: </td>
-                        <td><output id="shearX" maxlength="8" size="8"></td>
+                        <td>Max. moment, M<sub>max</sub> : </td>
+                        <td>
+                            <span id="momentMax" maxlength="8" size="8"></span>
+                            <select id="Mmax_unit" class="outputUnit">
+                                <option value="kip-ft">kip-ft</option>
+                                <option value="lbf-ft">lbf-ft</option>
+                                <option value="lbf-in">lbf-in</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Max. Moment, M<sub>max</sub>: </td>
-                        <td><output id="momentMax" maxlength="8" size="8"></td>
+                        <td>Moment at x, M<sub>x</sub> : </td>
+                        <td>
+                            <span id="momentX" maxlength="8" size="8"></span>
+                            <select id="Mx_unit" class="outputUnit">
+                                <option value="kip-ft">kip-ft</option>
+                                <option value="lbf-ft">lbf-ft</option>
+                                <option value="lbf-in">lbf-in</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Moment at x, M<sub>x</sub>: </td>
-                        <td><output id="momentX" maxlength="8" size="8"></td>
+                        <td>Max. Deflection, Δ<sub>max</sub> : </td>
+                        <td>
+                            <span id="deflectionMax" maxlength="8" size="8"></span>
+                            <select id="Dmax_unit" class="outputUnit">
+                                <option value="in">in</option>
+                                <option value="ft">ft</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Max. Deflection, Δ<sub>max</sub>: </td>
-                        <td><output id="deflectionMax" maxlength="8" size="8"></td>
-                    </tr>
-                    <tr>
-                        <td>Deflection at x, Δ<sub>x</sub>: </td>
-                        <td><output id="deflectionX" maxlength="8" size="8"></td>
+                        <td>Deflection at x, Δ<sub>x</sub> : </td>
+                        <td>
+                            <span id="deflectionX" maxlength="8" size="8"></span>
+                            <select id="Dx_unit" class="outputUnit">
+                                <option value="in">in</option>
+                                <option value="ft">ft</option>
+                            </select>
+                        </td>
                     </tr>
                 </table>
             </class>
