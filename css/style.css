@@ -42,11 +42,11 @@ input[inputmode=numeric]:focus {
 }
 
 .inputs, .outputs {
-    margin: 5px 30px;
+    padding: 5px 10px;
 }
 
 select {
-    width: 70px;
+    width: 80px;
 }
 
 button {
@@ -90,9 +90,9 @@ button {
     input[inputmode=numeric] {
         width: 70px;
     }
-    select {
+    /* select {
         width: 60px;
-    }
+    } */
 }
 
 @media (max-width: 800px) {
